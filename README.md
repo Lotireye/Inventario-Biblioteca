@@ -54,7 +54,6 @@ mvn exec:java -Dexec.mainClass="principal.Main"
 
 ## Capturas
 
-[Agregar aquí 1-2 capturas de la consola en funcionamiento]
 
 ## Roadmap
 
@@ -65,4 +64,4 @@ mvn exec:java -Dexec.mainClass="principal.Main"
 
 ## Autor
 
-[Tu nombre] — [link a tu LinkedIn o GitHub]
+Angello Ramos
