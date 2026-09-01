@@ -7,12 +7,20 @@ public abstract class ItemBiblioteca {
   private int stock;
   private double costo;
 
-  public ItemBiblioteca(int id, String titulo, double costo, int stock) {
-    this.id = id;
+  public ItemBiblioteca(String titulo, double costo, int stock) {
+    this.id = -1;
     this.titulo = titulo;
     this.stock = stock;
     this.costo = costo;
     this.disponibles = stock;
+  }
+
+  public ItemBiblioteca(String titulo, double costo, int stock, int disponibles) {
+    this.id = -1;
+    this.titulo = titulo;
+    this.stock = stock;
+    this.costo = costo;
+    this.disponibles = disponibles;
   }
 
   public void editarStock(int numeroPositivoONegativo) {
@@ -31,6 +39,10 @@ public abstract class ItemBiblioteca {
     } else {
       System.out.println("ERROR: PRECIO NEGATIVO O CERO");
     }
+  }
+
+  public void asignarIdGenerado(int id) {
+    this.id = id;
   }
 
   public void setTitulo(String tituloNuevo) {
@@ -58,25 +70,17 @@ public abstract class ItemBiblioteca {
   }
 
   public void prestar() throws IllegalStateException {
-    try {
-      if (disponibles <= 0) {
-        throw new IllegalStateException("ERROR: ITEM NO DISPONIBLE");
-      }
-      disponibles--;
-    } catch (IllegalStateException ex) {
-      System.out.println(ex.getMessage());
+    if (disponibles <= 0) {
+      throw new IllegalStateException("ERROR: ITEM NO DISPONIBLE");
     }
+    disponibles--;
   }
 
   public void devolver() throws IllegalStateException {
-    try {
-      if (disponibles >= stock) {
-        throw new IllegalStateException("ERROR: STOCK REGISTRADO ALCANZADO");
-      }
-      disponibles++;
-    } catch (IllegalStateException ex) {
-      System.out.println(ex.getMessage());
+    if (disponibles >= stock) {
+      throw new IllegalStateException("ERROR: STOCK REGISTRADO ALCANZADO");
     }
+    disponibles++;
   }
 
   public abstract String getInfo();

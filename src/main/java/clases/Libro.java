@@ -4,8 +4,14 @@ public class Libro extends ItemBiblioteca {
   private String autor;
   private String genero;
 
-  public Libro(int id, String titulo, double costo, int stock, String autor, String genero) {
-    super(id, titulo, costo, stock);
+  public Libro(String titulo, double costo, int stock, String autor, String genero) {
+    super(titulo, costo, stock);
+    this.autor = autor;
+    this.genero = genero;
+  }
+
+  public Libro(String titulo, double costo, int stock, int disponibles, String autor, String genero) {
+    super(titulo, costo, stock, disponibles);
     this.autor = autor;
     this.genero = genero;
   }

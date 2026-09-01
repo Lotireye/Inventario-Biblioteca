@@ -4,8 +4,14 @@ public class Revista extends ItemBiblioteca {
   private int numEdicion;
   private String periodicidad;
 
-  public Revista(int id, String titulo, double costo, int stock, int numEdicion, String periodicidad) {
-    super(id, titulo, costo, stock);
+  public Revista(String titulo, double costo, int stock, int numEdicion, String periodicidad) {
+    super(titulo, costo, stock);
+    this.numEdicion = numEdicion;
+    this.periodicidad = periodicidad;
+  }
+
+  public Revista(String titulo, double costo, int stock, int disponibles, int numEdicion, String periodicidad) {
+    super(titulo, costo, stock, disponibles);
     this.numEdicion = numEdicion;
     this.periodicidad = periodicidad;
   }
@@ -14,7 +20,7 @@ public class Revista extends ItemBiblioteca {
     return numEdicion;
   }
 
-  public String getPeriocidad() {
+  public String getPeriodicidad() {
     return periodicidad;
   }
 

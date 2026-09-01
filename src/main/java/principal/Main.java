@@ -1,7 +1,11 @@
 package principal;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import clases.ItemBiblioteca;
 import organizador.GestorItems;
+import persistencia.ItemDAO;
 import utilidades.Lector;
 
 public class Main {
@@ -10,6 +14,13 @@ public class Main {
     Lector sc = new Lector();
     GestorItems gestor = new GestorItems();
     int opcion = 0;
+
+    ItemDAO itemDAO = new ItemDAO();
+    try {
+      itemDAO.listar();
+    } catch (SQLException ex) {
+      System.out.println("ERROR SQL ");
+    }
 
     do {
       System.out.println("\n=======================");
@@ -42,60 +53,113 @@ public class Main {
           String periodicidad = sc.leerTexto("PERIODICIDAD: ");
           costo = sc.leerDouble("COSTO: ");
           stock = sc.leerEntero("STOCK: ");
-
-          gestor.agregar(titulo, costo, stock, numEdicion, periodicidad);
+          try {
+            gestor.agregar(titulo, costo, stock, numEdicion, periodicidad);
+          } catch (SQLException ex) {
+            System.out.println("ERROR: NO SE PUDO GUARDAR EN LA BASE DE DATOS");
+          }
           break;
 
         case 3:
-          if (gestor.getCantItems() > 0) {
-            gestor.listarItems();
-          } else {
-            System.out.println("NO HAY ITEMS REGISTRADOS\n");
+          try {
+            ArrayList<ItemBiblioteca> items = gestor.listarItems();
+            if (!items.isEmpty()) {
+              for (ItemBiblioteca item : items) {
+                System.out.println(item.getInfo());
+              }
+            } else {
+              System.out.println("NO HAY ITEMS REGISTRADOS");
+            }
+          } catch (SQLException ex) {
+            System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
           }
           break;
 
         case 4:
-          gestor.prestar(sc.leerEntero("ID DEL ITEM:"));
+          try {
+            gestor.prestar(sc.leerEntero("ID DEL ITEM:"));
+          } catch (SQLException ex) {
+            System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
+          } catch (IllegalStateException ex) {
+            System.out.println(ex.getMessage());
+          }
           break;
 
         case 5:
-          gestor.devolver(sc.leerEntero("ID DEL ITEM: "));
+          try {
+            gestor.devolver(sc.leerEntero("ID DEL ITEM: "));
+          } catch (SQLException ex) {
+            System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
+          } catch (IllegalStateException ex) {
+            System.out.println(ex.getMessage());
+          }
           break;
 
         case 6:
-          ItemBiblioteca item = gestor.buscarItem(sc.leerEntero("ID DEL ITEM: "));
+          ItemBiblioteca item = null;
+          try {
+            item = gestor.buscarItem(sc.leerEntero("ID DEL ITEM: "));
+          } catch (SQLException ex) {
+            System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
+            break;
+          }
           if (item == null) {
             System.out.println("ERROR: ID NO ENCONTRADO");
             break;
           }
+
           int eleccion = 0;
+
           do {
             System.out.println("EDITOR DE ITEM");
-            System.out.println("1. Editar Stock");
-            System.out.println("2. Editar Costo");
-            System.out.println("3. Salir");
+            System.out.println("1. Agregar Stock");
+            System.out.println("2. Reducir Stock");
+            System.out.println("3. Editar Costo");
+            System.out.println("4. Salir");
             eleccion = sc.leerEntero("Ingrese la opcion: ");
             switch (eleccion) {
               case 1:
-                item.editarStock(sc.leerEntero("STOCK AÑADIDO (POSITIVO) O DISMINUIDO (NEGATIVO): "));
+                try {
+                  gestor.editarStock(item.getID(), sc.leerEntero("STOCK AÑADIDO: "));
+                } catch (SQLException ex) {
+                  System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
+                }
                 break;
 
               case 2:
-                item.setCosto(sc.leerDouble("NUEVO COSTO: "));
+                int nuevoStock = sc.leerEntero("STOCK DISMINUIDO: ");
+                try {
+                  gestor.editarStock(item.getID(), (nuevoStock * -1));
+                } catch (SQLException ex) {
+                  System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
+                }
                 break;
 
               case 3:
+                try {
+                  gestor.editarCosto(item.getID(), sc.leerDouble("NUEVO COSTO: "));
+                } catch (SQLException ex) {
+                  System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
+                }
+                break;
+
+              case 4:
                 break;
 
               default:
                 System.out.println("Ingrese una opcion del 1 al 4");
                 break;
             }
-          } while (eleccion != 3);
+          } while (eleccion != 4);
           break;
 
         case 7:
-          gestor.eliminar(sc.leerEntero("ID DEL ITEM: "));
+          try {
+            gestor.eliminar(sc.leerEntero("ID DEL ITEM: "));
+
+          } catch (SQLException ex) {
+            System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
+          }
           break;
         case 8:
           System.out.println("Saliendo del programa...");
