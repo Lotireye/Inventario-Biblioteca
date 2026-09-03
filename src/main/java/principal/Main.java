@@ -1,5 +1,6 @@
 package principal;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -32,7 +33,8 @@ public class Main {
       System.out.println("5. Devolver");
       System.out.println("6. Editar");
       System.out.println("7. Eliminar Item");
-      System.out.println("8. Salir");
+      System.out.println("8. Importar Libros desde CSV");
+      System.out.println("9. Salir");
       System.out.println("=======================\n");
       opcion = sc.leerEntero("Ingrese la opcion: ");
 
@@ -44,7 +46,11 @@ public class Main {
           String genero = sc.leerTexto("GENERO: ");
           double costo = sc.leerDouble("COSTO: ");
           int stock = sc.leerEntero("STOCK: ");
-          gestor.agregar(titulo, costo, stock, autor, genero);
+          try {
+            gestor.agregar(titulo, costo, stock, autor, genero);
+          } catch (SQLException ex) {
+            System.out.println("ERROR: NO SE PUDO GUARDAR EN LA BASE DE DATOS");
+          }
           break;
 
         case 2:
@@ -162,6 +168,17 @@ public class Main {
           }
           break;
         case 8:
+          int stockDefecto = sc.leerEntero("INGRESE EL STOCK POR DEFECTO: ");
+          String ruta = sc.leerTexto("INGRESE LA RUTA DEL ARCHIVO CSV: ");
+          try {
+            gestor.agregarCsv(ruta, stockDefecto);
+          } catch (SQLException ex) {
+            System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
+          } catch (IOException ex) {
+            System.out.println("ERROR: LECTURA DE ARCHIVOS INCORRECTA");
+          }
+          break;
+        case 9:
           System.out.println("Saliendo del programa...");
           sc.close();
           break;
@@ -170,7 +187,7 @@ public class Main {
           System.out.println("Ingrese una opcion del 1 al 6");
           break;
       }
-    } while (opcion != 8);
+    } while (opcion != 9);
 
   }
 

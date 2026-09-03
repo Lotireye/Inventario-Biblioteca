@@ -3,7 +3,7 @@
 
 CREATE TABLE items (
     id SERIAL PRIMARY KEY,
-    titulo VARCHAR(255) NOT NULL,
+    titulo VARCHAR(255) NOT NULL UNIQUE,
     costo NUMERIC(10,2) NOT NULL,
     stock INTEGER NOT NULL,
     disponibles INTEGER NOT NULL

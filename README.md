@@ -24,9 +24,9 @@ Sistema de gestión de biblioteca desarrollado en Java, con foco en aplicar Prog
 ```
 principal/  → Main.java — menú y flujo del programa
 clases/     → ItemBiblioteca (abstracta), Libro, Revista
-organizador/→ ItemFactory, GestorItems
-utilidades/ → Lector
-database/   → Conexion, ItemDAO
+organizador/→ GestorCsv, GestorItems
+utilidades/ → Lector, ItemFactory
+persistencia/   → Conexion, ItemDAO
 ```
 
 ### Patrón Factory
