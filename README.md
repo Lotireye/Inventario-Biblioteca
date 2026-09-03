@@ -22,7 +22,7 @@ Sistema de gestión de biblioteca desarrollado en Java, con foco en aplicar Prog
 ## Arquitectura y patrones de diseño
 
 ```
-principal/  → Main.java — menú y flujo del programa
+principal/  → Main.java — menú, flujo del programa y manejo de excepciones
 clases/     → ItemBiblioteca (abstracta), Libro, Revista
 organizador/→ GestorCsv, GestorItems
 utilidades/ → Lector, ItemFactory
@@ -71,8 +71,8 @@ mvn exec:java -Dexec.mainClass="principal.Main"
 Necesitás una base PostgreSQL con las tablas creadas — ver `schema.sql` en la raíz del proyecto.
 
 ## Capturas
-![Menu Principal de la Consola](images/consola.png)
-![Tabla de Items](sql.png)
+![Menu Principal de la Consola](images/console.png)
+![Tabla de Items](images/sql.png)
 ![Relaciones entre tablas](images/relaciones.png)
 
 
