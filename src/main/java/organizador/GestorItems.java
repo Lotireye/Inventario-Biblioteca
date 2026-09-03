@@ -16,15 +16,14 @@ public class GestorItems {
   }
 
   public void agregar(String titulo, double costo, int stock, String autor, String genero) throws SQLException {
-    ItemBiblioteca item = ItemFactory.crearLibro(titulo, costo, stock, autor, genero);
-    itemDAO.guardar(item);
+    itemDAO.guardar(ItemFactory.crearLibro(titulo, costo, stock, autor, genero));
   }
 
   public void agregar(String titulo, double costo, int stock, int numEdicion, String periodicidad) throws SQLException {
     itemDAO.guardar(ItemFactory.crearRevista(titulo, costo, stock, numEdicion, periodicidad));
   }
 
-  public void agregarCsv(String nombre, int stock) throws IOException, SQLException {
+  public void agregarCsv(String nombre, int stock) throws IOException {
     GestorCsv gestor = new GestorCsv();
     ArrayList<String[]> campos = gestor.leerCsv(nombre);
 
@@ -35,8 +34,11 @@ public class GestorItems {
       boolean usarStock = Boolean.parseBoolean(campo[3]);
 
       int stockFinal = usarStock ? stock : 0;
-
-      agregar(titulo, costo, stockFinal, "Desconocido", genero);
+      try {
+        agregar(titulo, costo, stockFinal, "Desconocido", genero);
+      } catch (SQLException ex) {
+        System.out.println("ERROR: LIBRO DUPLICADO NO AÑADIDO " + titulo);
+      }
     }
   }
 

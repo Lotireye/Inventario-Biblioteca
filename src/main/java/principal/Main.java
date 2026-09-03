@@ -172,8 +172,6 @@ public class Main {
           String ruta = sc.leerTexto("INGRESE LA RUTA DEL ARCHIVO CSV: ");
           try {
             gestor.agregarCsv(ruta, stockDefecto);
-          } catch (SQLException ex) {
-            System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
           } catch (IOException ex) {
             System.out.println("ERROR: LECTURA DE ARCHIVOS INCORRECTA");
           }
