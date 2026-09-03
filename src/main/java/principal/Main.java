@@ -31,10 +31,12 @@ public class Main {
       System.out.println("3. Listar Items");
       System.out.println("4. Prestar");
       System.out.println("5. Devolver");
-      System.out.println("6. Editar");
-      System.out.println("7. Eliminar Item");
-      System.out.println("8. Importar Libros desde CSV");
-      System.out.println("9. Salir");
+      System.out.println("6. Buscar Item por ID");
+      System.out.println("7. Buscar Item por Titulo");
+      System.out.println("8. Editar");
+      System.out.println("9. Eliminar Item");
+      System.out.println("10. Importar Libros desde CSV");
+      System.out.println("0. Salir");
       System.out.println("=======================\n");
       opcion = sc.leerEntero("Ingrese la opcion: ");
 
@@ -102,6 +104,24 @@ public class Main {
           break;
 
         case 6:
+          int id = sc.leerEntero("INGRESE EL ID DEL ITEM: ");
+          try {
+            System.out.println(gestor.buscarItem(id).getInfo());
+          } catch (SQLException ex) {
+            System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
+          }
+          break;
+
+        case 7:
+          titulo = sc.leerTexto("INGRESE EL TITULO DEL ITEM: ");
+          try {
+            System.out.println(gestor.buscarPorTitulo(titulo).getInfo());
+          } catch (SQLException ex) {
+            System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
+          }
+          break;
+
+        case 8:
           ItemBiblioteca item = null;
           try {
             item = gestor.buscarItem(sc.leerEntero("ID DEL ITEM: "));
@@ -117,6 +137,7 @@ public class Main {
           int eleccion = 0;
 
           do {
+            System.out.println(item.getInfo());
             System.out.println("EDITOR DE ITEM");
             System.out.println("1. Agregar Stock");
             System.out.println("2. Reducir Stock");
@@ -159,7 +180,7 @@ public class Main {
           } while (eleccion != 4);
           break;
 
-        case 7:
+        case 9:
           try {
             gestor.eliminar(sc.leerEntero("ID DEL ITEM: "));
 
@@ -167,7 +188,7 @@ public class Main {
             System.out.println("ERROR: NO SE PUDO COMUNICAR CON LA BASE DE DATOS");
           }
           break;
-        case 8:
+        case 10:
           int stockDefecto = sc.leerEntero("INGRESE EL STOCK POR DEFECTO: ");
           String ruta = sc.leerTexto("INGRESE LA RUTA DEL ARCHIVO CSV: ");
           try {
@@ -176,7 +197,7 @@ public class Main {
             System.out.println("ERROR: LECTURA DE ARCHIVOS INCORRECTA");
           }
           break;
-        case 9:
+        case 0:
           System.out.println("Saliendo del programa...");
           sc.close();
           break;
@@ -185,7 +206,7 @@ public class Main {
           System.out.println("Ingrese una opcion del 1 al 6");
           break;
       }
-    } while (opcion != 9);
+    } while (opcion != 0);
 
   }
 

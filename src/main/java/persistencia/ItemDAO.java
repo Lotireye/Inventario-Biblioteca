@@ -102,6 +102,60 @@ public class ItemDAO {
     return items;
   }
 
+  public ItemBiblioteca buscarTitulo(String tituloItem) throws SQLException {
+    String sqlLibro = """
+          SELECT ITEM.id, ITEM.titulo, ITEM.costo, ITEM.stock, ITEM.disponibles, LIBRO.autor, LIBRO.genero
+        FROM ITEM JOIN LIBRO ON ITEM.id = LIBRO.item_id
+        WHERE ITEM.titulo = ?
+        """;
+    String sqlRevista = """
+          SELECT ITEM.id, ITEM.titulo, ITEM.costo, ITEM.stock, ITEM.disponibles, REVISTA.num_edicion, REVISTA.periodicidad
+        FROM ITEM JOIN REVISTA ON ITEM.id = REVISTA.item_id
+        WHERE ITEM.titulo = ?
+        """;
+    try (Connection conn = Conexion.conectar()) {
+
+      try (PreparedStatement stmtLibro = conn.prepareStatement(sqlLibro)) {
+        stmtLibro.setString(1, tituloItem);
+        try (ResultSet rsLibro = stmtLibro.executeQuery()) {
+          if (rsLibro.next()) {
+            int id = rsLibro.getInt("id");
+            String titulo = rsLibro.getString("titulo");
+            double costo = rsLibro.getDouble("costo");
+            int stock = rsLibro.getInt("stock");
+            int disponibles = rsLibro.getInt("disponibles");
+            String autor = rsLibro.getString("autor");
+            String genero = rsLibro.getString("genero");
+            Libro libro = new Libro(titulo, costo, stock, disponibles, autor, genero);
+            libro.asignarIdGenerado(id);
+            return libro;
+          }
+        }
+      }
+
+      try (PreparedStatement stmtRevista = conn.prepareStatement(sqlRevista)) {
+        stmtRevista.setString(1, tituloItem);
+        try (ResultSet rsRevista = stmtRevista.executeQuery()) {
+          if (rsRevista.next()) {
+            int id = rsRevista.getInt("id");
+            String titulo = rsRevista.getString("titulo");
+            double costo = rsRevista.getDouble("costo");
+            int stock = rsRevista.getInt("stock");
+            int disponibles = rsRevista.getInt("disponibles");
+            int numEdicion = rsRevista.getInt("num_edicion");
+            String periodicidad = rsRevista.getString("periodicidad");
+            Revista revista = new Revista(titulo, costo, stock, disponibles, numEdicion, periodicidad);
+            revista.asignarIdGenerado(id);
+            return revista;
+          }
+        }
+      }
+    }
+
+    return null;
+
+  }
+
   public ItemBiblioteca buscarID(int id) throws SQLException {
     String sqlLibro = """
         SELECT ITEM.id, ITEM.titulo, ITEM.costo, ITEM.stock, ITEM.disponibles, LIBRO.autor, LIBRO.genero

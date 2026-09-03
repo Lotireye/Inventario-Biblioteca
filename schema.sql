@@ -1,7 +1,7 @@
 -- Esquema de base de datos para InventarioBiblioteca
 -- Ejecutar contra una base PostgreSQL vacía (ej: CREATE DATABASE biblioteca;)
 
-CREATE TABLE items (
+CREATE TABLE item (
     id SERIAL PRIMARY KEY,
     titulo VARCHAR(255) NOT NULL UNIQUE,
     costo NUMERIC(10,2) NOT NULL,
@@ -9,13 +9,13 @@ CREATE TABLE items (
     disponibles INTEGER NOT NULL
 );
 
-CREATE TABLE libros (
+CREATE TABLE libro (
     item_id INTEGER PRIMARY KEY REFERENCES items(id) ON DELETE CASCADE,
     autor VARCHAR(255) NOT NULL,
     genero VARCHAR(100)
 );
 
-CREATE TABLE revistas (
+CREATE TABLE revista (
     item_id INTEGER PRIMARY KEY REFERENCES items(id) ON DELETE CASCADE,
     num_edicion INTEGER NOT NULL,
     periodicidad VARCHAR(50)

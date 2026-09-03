@@ -27,6 +27,7 @@ public class Revista extends ItemBiblioteca {
   @Override
   public String getInfo() {
     return """
+
         ID ITEM : #%04d
         TITULO: %s
         EDICION: %d

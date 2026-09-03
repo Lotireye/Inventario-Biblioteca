@@ -42,6 +42,10 @@ public class GestorItems {
     }
   }
 
+  public ItemBiblioteca buscarPorTitulo(String titulo) throws SQLException {
+    return itemDAO.buscarTitulo(titulo);
+  }
+
   public ArrayList<ItemBiblioteca> listarItems() throws SQLException {
     return itemDAO.listar();
   }
@@ -85,6 +89,7 @@ public class GestorItems {
     if (item != null) {
       item.editarStock(stockAñadido);
       itemDAO.actualizarStock(id, item.getStock());
+      itemDAO.actualizarDisponibles(id, (item.disponibles() + stockAñadido));
     }
   }
 
